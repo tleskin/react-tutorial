@@ -7,7 +7,14 @@ var LikeArticle = React.createClass({
     }
   },
   handleClick: function() {
-    this.setState({isLiked: !this.state.isLiked});
+    var method = this.state.isLiked ? "DELETE" : "POST";
+    $.ajax({
+      url: '/articles/' + this.props.articleID + "/likes",
+      type: method,
+      success: function(response) {
+    this.setState({isLiked: response.liked});
+      }.bind(this)
+    });
   },
   getInitialState: function() {
     return {isLiked: this.props.initialIsLiked};
@@ -16,8 +23,12 @@ var LikeArticle = React.createClass({
 
 $(document).ready(function() {
   $(".like-article").each(function(index, element) {
+    var props = {
+      initialIsLiked: $(element).data("initial-is-liked"),
+      articleID: $(element).data("article-id")
+    }
     React.render(
-      React.createElement(LikeArticle, {initialIsLiked: $(element).data("initial-is-liked")}),
+      React.createElement(LikeArticle, props),
       element
     );
   });
