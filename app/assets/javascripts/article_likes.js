@@ -6,7 +6,17 @@ var Hello = React.createClass({
 
 var LikeArticle = React.createClass({
   render: function() {
-    return React.createElement("div", null, "Like Me!");
+    if (this.state.isLiked) {
+      return React.createElement("div", {onClick: this.handleClick}, "Un-Like Me!");
+    } else {
+      return React.createElement("div", {onClick: this.handleClick}, "Like Me!");
+    }
+  },
+  handleClick: function() {
+    this.setState({isLiked: !this.state.isLiked});
+  },
+  getInitialState: function() {
+    return {isLiked: false};
   }
 });
 
